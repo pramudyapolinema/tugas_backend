@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ProductController;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     Route::resource('categories', CategoryController::class);
+    Route::resource('products', ProductController::class);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +18,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::all();
-        return response()->json([CategoryResource::collection($category), 'Categories Fetched']);
+        $category = Product::latest()->get();
+        return response()->json([ProductResource::collection($category), 'Product Fetched']);
     }
 
     /**
@@ -38,7 +40,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request['slug'] = Str::slug($request->name);
+        $request->validate([
+            'category_id' => 'required|integer',
+            'name' => 'required',
+            'price' => 'required|integer',
+        ]);
+
+        $product = new Product($request->all());
+        $category = Category::where('id', $request->category_id)->first();
+        $product->category()->associate($category);
+
+        $product->save();
     }
 
     /**
