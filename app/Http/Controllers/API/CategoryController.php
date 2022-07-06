@@ -16,8 +16,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::all();
-        return response()->json([CategoryResource::collection($category), 'Categories Fetched']);
+        $categories = Category::all();
+        return response()->json(CategoryResource::collection($categories));
+    }
+
+    public function order(){
+        $categories = Category::withCount('product')->orderBy('product_count', 'desc')->get();
+        return response()->json(CategoryResource::collection($categories));
     }
 
     /**

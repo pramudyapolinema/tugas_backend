@@ -20,7 +20,12 @@ class ProductController extends Controller
     public function index()
     {
         $product = Product::all();
-        return response()->json([ProductResource::collection($product), 'Product Fetched']);
+        return response()->json(ProductResource::collection($product));
+    }
+
+    public function orderByPrice(){
+        $product = Product::orderBy('price', 'asc')->get();
+        return response()->json(ProductResource::collection($product));
     }
 
     /**
@@ -83,7 +88,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::where('id', $id)->get();
-        return response()->json([ProductResource::collection($product), 'Product Fetched']);
+        return response()->json(ProductResource::collection($product));
     }
 
     /**
