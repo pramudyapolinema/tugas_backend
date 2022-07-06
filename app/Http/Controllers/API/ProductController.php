@@ -61,13 +61,13 @@ class ProductController extends Controller
         $files = $request->file('image');
         $allowedfileExtension = ['jpg', 'png', 'jpeg', 'JPG', 'JPEG', 'PNG'];
         if($files){
-            // foreach($request->file('image') as $file) {
-                $ext = $files->getClientOriginalExtension();
+            foreach($files as $file) {
+                $ext = $file->getClientOriginalExtension();
                 $check = in_array($ext, $allowedfileExtension);
 
                 if($check) {
-                    $name = $files->getClientOriginalName();
-                    $path = $files->storeAs('public/productAssets', $name);
+                    $name = $file->getClientOriginalName();
+                    $path = $file->storeAs('public/productAssets', $name);
                     $asset = new ProductAsset();
                     $asset->product_id = $product->id;
                     $asset->image = $name;
@@ -75,7 +75,7 @@ class ProductController extends Controller
                 } else {
                     return response()->json(['File Format Not Supported'], 422);
                 }
-            // }
+            }
         }
     }
 

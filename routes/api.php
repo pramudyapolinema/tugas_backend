@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ProductAssetController;
 use App\Http\Controllers\API\ProductController;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
@@ -31,6 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/products/order', [ProductController::class, 'orderByPrice']);
     Route::apiResource('products', ProductController::class);
+
+    Route::resource('/asset', ProductAssetController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
